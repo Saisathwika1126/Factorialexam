@@ -1,4 +1,4 @@
-public class Factorial {
+public class TestFactorial {
     public static void main(String[] args) {
         try{
             if(Factorial.compute(5)!=120){
