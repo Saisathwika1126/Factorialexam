@@ -3,6 +3,12 @@ pipeline {
 
     stages {
 
+        stage("Checkout") {
+            steps {
+                checkout scm
+            }
+        }
+
         stage("Compile") {
             steps {
                 sh "javac Factorial.java TestFactorial.java"
@@ -23,7 +29,14 @@ pipeline {
 
         stage("Package JAR") {
             steps {
-                sh "jar cmf manifest.txt factorial.jar Factorial.class TestFactorial.class"
+                sh "echo 'Main-Class: Factorial' > manifest.txt"
+                sh "jar cfm factorial.jar manifest.txt Factorial.class TestFactorial.class"
+            }
+        }
+
+        stage("Test JAR") {
+            steps {
+                sh "java -jar factorial.jar"
             }
         }
 
@@ -33,14 +46,5 @@ pipeline {
             }
         }
     }
-
-    post {
-        success {
-            echo "Pipeline successfully built & artifact generated"
-        }
-
-        failure {
-            echo "Build/Test failed"
-        }
-    }
 }
+```
