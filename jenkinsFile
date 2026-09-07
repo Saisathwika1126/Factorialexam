@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage("Compile") {
+            steps {
+                sh "javac Factorial.java TestFactorial.java"
+            }
+        }
+
+        stage("Test") {
+            steps {
+                sh "java TestFactorial"
+            }
+        }
+
+        stage("Run") {
+            steps {
+                sh "java Factorial"
+            }
+        }
+
+        stage("Package JAR") {
+            steps {
+                sh "jar cmf manifest.txt factorial.jar Factorial.class TestFactorial.class"
+            }
+        }
+
+        stage("Archive JAR") {
+            steps {
+                archiveArtifacts artifacts: "factorial.jar", fingerprint: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline successfully built & artifact generated"
+        }
+
+        failure {
+            echo "Build/Test failed"
+        }
+    }
+}
