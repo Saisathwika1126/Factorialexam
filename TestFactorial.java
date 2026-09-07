@@ -1,21 +1,21 @@
 public class TestFactorial {
     public static void main(String[] args) {
-        try{
-            if(Factorial.compute(5)!=120){
+        try {
+            if (Factorial.compute(5) != 120) {
                 System.out.println("Test failed: Factorial of 5 should be 120");
-
-            } 
-            if(Factorial.compute(0)!=1){
-                system.out.println("Test Failed: wrong output");
-                    }
-                
-                else {
-                System.out.println("Test cases passed");
+                return;
             }
-        }
-            catch(Exception e){
-                System.out.println("Test failed: "+e.getMessage());
-        }
 
+            if (Factorial.compute(0) != 1) {
+                System.out.println("Test failed: Factorial of 0 should be 1");
+                return;
+            }
+
+            System.out.println("Test cases passed");
+
+        } catch (Exception e) {
+            System.out.println("Test failed: " + e.getMessage());
+        }
     }
 }
+```
