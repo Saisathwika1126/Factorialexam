@@ -6,10 +6,13 @@ public class Factorial {
 
             } 
             if(Factorial.compute(0)!=1){
+                system.out.println("Test Failed: wrong output")
+                    }
                 
                 else {
                 System.out.println("Test cases passed");
             }
+        }
             catch(Exception e){
                 System.out.println("Test failed: "+e.getMessage());
         }
