@@ -6,7 +6,7 @@ public class Factorial {
 
             } 
             if(Factorial.compute(0)!=1){
-                system.out.println("Test Failed: wrong output")
+                system.out.println("Test Failed: wrong output");
                     }
                 
                 else {
