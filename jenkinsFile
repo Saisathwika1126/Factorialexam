@@ -1,38 +1,53 @@
-pipeline{
+pipeline {
     agent any
-    stages{
-        stage('Compile'){
-            steps{
+
+    stages {
+
+        stage('Compile') {
+            steps {
                 sh 'javac Factorial.java TestFactorial.java'
             }
         }
-        stage('Test'){
-            steps{
+
+        stage('Test') {
+            steps {
                 sh 'java TestFactorial'
             }
         }
-        stage('Run'){
-            steps{
+
+        stage('Run') {
+            steps {
                 sh 'java Factorial'
             }
         }
-        stage('Package JAR'){
-            steps{
-                sh 'jar cfm factorial.jar manifest.txt Factorial.class'
+
+        stage('Package JAR') {
+            steps {
+                sh 'jar cfm finalexamjar.jar manifest.txt Factorial.class'
             }
         }
-        stage('Archive JAR'){
-            steps{
-                archiveArtifacts artifacts: 'factorial.jar'
+
+        stage('Check JAR') {
+            steps {
+                sh 'jar tf finalexamjar.jar'
+                sh 'unzip -p finalexamjar.jar META-INF/MANIFEST.MF'
+            }
+        }
+
+        stage('Archive JAR') {
+            steps {
+                archiveArtifacts artifacts: 'finalexamjar.jar'
             }
         }
     }
-    post{
-        success{
-            echo 'built artifacts successfully.'
+
+    post {
+        success {
+            echo 'Built artifacts successfully.'
         }
-        failure{
-            echo 'build or test failed.'
+
+        failure {
+            echo 'Build or test failed.'
         }
     }
 }
