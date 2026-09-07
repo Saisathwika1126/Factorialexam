@@ -1,50 +1,38 @@
-pipeline {
+pipeline{
     agent any
-
-    stages {
-
-        stage("Checkout") {
-            steps {
-                checkout scm
+    stages{
+        stage('Compile'){
+            steps{
+                sh 'javac Factorial.java TestFactorial.java'
             }
         }
-
-        stage("Compile") {
-            steps {
-                sh "javac Factorial.java TestFactorial.java"
+        stage('Test'){
+            steps{
+                sh 'java TestFactorial'
             }
         }
-
-        stage("Test") {
-            steps {
-                sh "java TestFactorial"
+        stage('Run'){
+            steps{
+                sh 'java Factorial'
             }
         }
-
-        stage("Run") {
-            steps {
-                sh "java Factorial"
+        stage('Package JAR'){
+            steps{
+                sh 'jar cfm factorial.jar manifest.txt Factorial.class'
             }
         }
-
-        stage("Package JAR") {
-            steps {
-                sh "echo 'Main-Class: Factorial' > manifest.txt"
-                sh "jar cfm factorial.jar manifest.txt Factorial.class TestFactorial.class"
-            }
-        }
-
-        stage("Test JAR") {
-            steps {
-                sh "java -jar factorial.jar"
-            }
-        }
-
-        stage("Archive JAR") {
-            steps {
-                archiveArtifacts artifacts: "factorial.jar", fingerprint: true
+        stage('Archive JAR'){
+            steps{
+                archiveArtifacts artifacts: 'factorial.jar'
             }
         }
     }
+    post{
+        success{
+            echo 'built artifacts successfully.'
+        }
+        failure{
+            echo 'build or test failed.'
+        }
+    }
 }
-
